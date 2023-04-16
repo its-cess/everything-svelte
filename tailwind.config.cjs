@@ -23,6 +23,10 @@ module.exports = {
 				silver: '#c0c0c0',
 				gallery: '#efeaf2',
 				fog: '#decaec'
+			},
+			zIndex: {
+				navBarToggle: 91,
+				navBar: 90
 			}
 		}
 	},

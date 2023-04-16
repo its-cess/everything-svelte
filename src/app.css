@@ -9,4 +9,9 @@
 	body {
 		@apply font-sansSerif;
 	}
+
+	/* sets the svg fill color to whatever the current text color is */
+	svg {
+		@apply fill-current;
+	}
 }
