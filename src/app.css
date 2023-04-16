@@ -3,3 +3,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* layer directive provided by tailwind that allows you to inject styles into whichever area you want */
+@layer base {
+	body {
+		@apply font-sansSerif;
+	}
+}
