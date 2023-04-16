@@ -1,9 +1,10 @@
 <script lang="ts">
 	export let label: 'draft' | 'sent' | 'current' | 'late' | 'paid' = 'draft';
+	export let className = '';
 </script>
 
 <div
-	class="text-md w-20 rounded-full text-center font-bold capitalize border-1"
+	class={`text-md w-20 rounded-full text-center font-bold capitalize border-1 ${className}`}
 	class:inverted={label === 'draft'}
 	class:success={label === 'sent' || label === 'current'}
 	class:alert={label === 'late'}
