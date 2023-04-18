@@ -7,6 +7,8 @@
 	import CircledAmount from '$lib/components/CircledAmount.svelte';
 	import InvoiceRowHeader from './InvoiceRowHeader.svelte';
 	import BlankState from './BlankState.svelte';
+	import Button from '$lib/components/Button.svelte';
+
 	import { centsToDollars, sumInvoices } from '$lib/utils/moneyHelpers';
 
 	onMount(() => {
@@ -31,17 +33,12 @@
 
 	<!-- NEW INVOICE BUTTON -->
 	<div>
-		<button
-			class="relative whitespace-nowrap rounded-lg bg-lavenderIndigo px-5 lg:px-10 py-2 lg:py-3 font-sansSerif text-base lg:text-xl font-black text-white shadow-colored hover:shadow-coloredHover translate-y-0 hover:-translate-y-2 transition-all"
-			>+ Invoice</button
-		>
+		<Button label="+ Invoice" onClick={() => {}} />
 	</div>
 </div>
 
 <!-- INVOICE LIST -->
 <div>
-	<!-- header row -->
-
 	<!-- invoices -->
 	{#if $invoices === null}
 		Loading...
