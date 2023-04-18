@@ -9,6 +9,7 @@
 	import BlankState from './BlankState.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import SlidePanel from '$lib/components/SlidePanel.svelte';
+	import InvoiceForm from './InvoiceForm.svelte';
 
 	import { centsToDollars, sumInvoices } from '$lib/utils/moneyHelpers';
 
@@ -70,6 +71,6 @@
 			isInvoiceFormShowing = false;
 		}}
 	>
-		Hello from the other sliiiiIIiIide!
+		<InvoiceForm />
 	</SlidePanel>
 {/if}
