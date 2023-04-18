@@ -9,7 +9,9 @@ module.exports = {
 		},
 		extend: {
 			backgroundImage: {
-				circle: `url('/images/circle.svg')`
+				arrowLeftUp: "url('/images/arrow-left-up.svg')",
+				arrowRightUp: "url('/images/arrow-right-up.svg')",
+				circle: "url('/images/circle.svg')"
 			},
 			borderWidth: {
 				'1': '1px'
@@ -26,6 +28,7 @@ module.exports = {
 				whisper: '#f9f4f9',
 				pastelPurple: '#b2a1bb',
 				purple: '#7209b7',
+				prim: '#ede6ef',
 				robinEggBlue: '#00e9c0',
 				blueGem: '#3813a0',
 				caribbeanGreen: '#1CC6A0',
