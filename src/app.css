@@ -15,7 +15,7 @@
 	}
 
 	/* add all these styles to the input[typ='text]:not(.search) EXCEPT for the one with the class of 'search */
-	input[type='text']:not(.search),
+	input[type='text']:not(.search):not(.line-item)
 	input[type='number'],
 	input[type='date'],
 	input[type='password'],
@@ -34,7 +34,7 @@
 	/* add focus area to be more accessible */
 	select:focus,
 	textarea:focus,
-	input[type='text']:not(.search):focus,
+	input[type='text']:not(.search):not(.line-item):focus,
 	input[type='number']:focus,
 	input[type='date']:focus,
 	input[type='password']:focus,
@@ -51,6 +51,10 @@
 @layer components {
 	.invoice-table {
 		@apply mb-3 grid w-full grid-cols-invoiceTableMobile gap-x-4 px-4 lg:grid-cols-invoiceTable lg:px-6;
+	}
+
+	.invoice-line-item {
+		@apply grid grid-cols-invoiceLineItem gap-x-5
 	}
 
 	.field {

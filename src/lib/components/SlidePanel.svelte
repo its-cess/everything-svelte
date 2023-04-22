@@ -18,7 +18,7 @@
 <Portal>
 	<Overlay />
 	<div
-		class="fixed bg-white w-3/4 h-screen py-20 px-32 right-0 top-0 z-slidePanel shadow-slidePanel"
+		class="fixed overflow-y-scroll bg-white w-3/4 h-screen py-20 px-32 right-0 top-0 z-slidePanel shadow-slidePanel"
 	>
 		<button
 			on:click={() => dispatch('closePanel')}
