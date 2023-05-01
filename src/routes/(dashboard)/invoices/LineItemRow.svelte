@@ -5,6 +5,7 @@
 
 	export let lineItem: LineItem;
 	export let canDelete: boolean = false;
+	export let isRequired: boolean = false;
 
 	let unitPrice: string = twoDecimals(lineItem.amount / lineItem.quantity);
 	let amount: string = twoDecimals(lineItem.amount);
@@ -19,7 +20,13 @@
 
 <div class="invoice-line-item border-b-2 border-fog py-2">
 	<div>
-		<input type="text" name="description" bind:value={lineItem.description} class="line-item" />
+		<input
+			type="text"
+			name="description"
+			bind:value={lineItem.description}
+			class="line-item"
+			required={isRequired}
+		/>
 	</div>
 
 	<div>
@@ -34,6 +41,7 @@
 			step="0.01"
 			min="0"
 			class="line-item text-right"
+			required={isRequired}
 		/>
 	</div>
 
@@ -47,6 +55,7 @@
 			}}
 			min="0"
 			class="line-item text-center"
+			required={isRequired}
 		/>
 	</div>
 

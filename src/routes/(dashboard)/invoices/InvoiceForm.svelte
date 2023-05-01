@@ -7,6 +7,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import Trash from '$lib/components/Icon/Trash.svelte';
 	import { states } from '$lib/utils/states';
+	import { today } from '$lib/utils/dateHelpers';
 
 	const blankLineItem = {
 		id: uuidv4(),
@@ -43,7 +44,8 @@
 		{#if !isNewClient}
 			<label for="client">Client</label>
 			<div class="flex items-end gap-x-5">
-				<select name="client" id="client">
+				<select name="client" id="client" required={!isNewClient}>
+					<option />
 					{#each $clients as client}
 						<option value={client.id}>{client.name}</option>
 					{/each}
@@ -61,7 +63,7 @@
 		{:else}
 			<label for="newClient">New Client</label>
 			<div class="flex items-end gap-x-5">
-				<input type="text" name="newClient" />
+				<input type="text" name="newClient" required={isNewClient} />
 				<div class="text-base font-bold text-monsoon leading-[3.5rem]">or</div>
 				<Button
 					label="Existing Client"
@@ -77,8 +79,8 @@
 
 	<!-- INVOICE ID -->
 	<div class="field col-span-2">
-		<label for="id">Invoice ID</label>
-		<input type="number" name="id" />
+		<label for="invoiceNumber">Invoice ID</label>
+		<input type="number" name="invoiceNumber" required />
 	</div>
 
 	<!-- NEW CLIENT -->
@@ -86,7 +88,7 @@
 		<div class="field grid col-span-6 gap-x-5" transition:slide>
 			<div class="field col-span-6">
 				<label for="email">Client's Email</label>
-				<input type="email" name="email" id="email" />
+				<input type="email" name="email" id="email" required={isNewClient} />
 			</div>
 
 			<div class="field col-span-6">
@@ -119,13 +121,13 @@
 	<!-- DUE DATE -->
 	<div class="field col-span-2">
 		<label for="dueDate">Due Date</label>
-		<input type="date" name="dueDate" />
+		<input type="date" name="dueDate" min={today} required />
 	</div>
 
 	<!-- ISSUE DATE -->
 	<div class="field col-span-2 col-start-5">
 		<label for="issueDate">Issue Date</label>
-		<input type="date" name="issueDate" />
+		<input type="date" name="issueDate" min={today} />
 	</div>
 
 	<!-- SUBJECT -->
@@ -175,6 +177,10 @@
 	</div>
 	<div class="field col-span-4 flex justify-end gap-x-5">
 		<Button label="Cancel" style="secondary" isAnimated={false} onClick={() => {}} />
-		<Button label="Save" onClick={() => {}} />
+		<button
+			type="submit"
+			class="bg-lavenderIndigo text-white button translate-y-0 shadow-colored transition-all hover:-translate-y-2 hover:shadow-coloredHover"
+			>Save</button
+		>
 	</div>
 </form>
