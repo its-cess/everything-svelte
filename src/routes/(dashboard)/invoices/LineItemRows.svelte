@@ -3,9 +3,24 @@
 	import LineItemRow from './LineItemRow.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import CircledAmount from '$lib/components/CircledAmount.svelte';
-	export let lineItems: LineItem[] | undefined = undefined;
+	import { sumLineItems, centsToDollars, twoDecimals } from '$lib/utils/moneyHelpers';
 
+	export let lineItems: LineItem[] | undefined = undefined;
 	let dispatch = createEventDispatcher();
+
+	let subtotal: string = '0.00';
+	let discount: number;
+	let discountedAmount: string = '0.00';
+	let total: string = '0.00';
+
+	$: if (sumLineItems(lineItems) > 0) {
+		subtotal = centsToDollars(sumLineItems(lineItems));
+	}
+
+	$: if (subtotal && discount) {
+		discountedAmount = centsToDollars(sumLineItems(lineItems) * (discount / 100));
+	}
+	$: total = twoDecimals(parseInt(subtotal) - parseInt(discountedAmount));
 </script>
 
 <div class="invoice-line-item border-b-2 border-daisyBush pb-2">
@@ -17,7 +32,7 @@
 
 {#if lineItems}
 	{#each lineItems as lineItem, index}
-		<LineItemRow {lineItem} on:removeLineItem canDelete={index > 0} />
+		<LineItemRow {lineItem} on:removeLineItem on:updateLineItem canDelete={index > 0} />
 	{/each}
 {/if}
 
@@ -32,10 +47,8 @@
 			}}
 		/>
 	</div>
-	<div>
-		<div class="font-bold py-5 text-right text-monsoon">Subtotal:</div>
-		<div class="py-5 text-right font-mono">$250.00</div>
-	</div>
+	<div class="font-bold py-5 text-right text-monsoon">Subtotal:</div>
+	<div class="py-5 text-right font-mono">${subtotal}</div>
 </div>
 
 <div class="invoice-line-item">
@@ -46,16 +59,18 @@
 			name="discount"
 			min="0"
 			max="100"
+			bind:value={discount}
 			class="line-item h-10 w-full border-b-2 border-dashed border-stone-300 pr-4 text-right focus:border-solid focus:border-lavenderIndigo focus:outline-none"
 		/>
 		<span class="absolute right-0 top-2 text-mono">%</span>
 	</div>
-	<div class="py-5 text-right font-mono">$10.00</div>
+	<div class="py-5 text-right font-mono">${discountedAmount}</div>
 </div>
 
 <div class="invoice-line-item">
 	<div class="col-span-6">
-		<CircledAmount label="Total:" amount="$1,444.00" />
+		<!-- doesn't add up total correctly if discountedAmount is not an even amount. need to fix calculations to use cents accurately. -->
+		<CircledAmount label="Total:" amount={`$${total}`} />
 	</div>
 </div>
 

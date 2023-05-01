@@ -27,7 +27,10 @@
 			type="number"
 			name="unitPrice"
 			bind:value={unitPrice}
-			on:blur={() => (unitPrice = twoDecimals(Number(unitPrice)))}
+			on:blur={() => {
+				unitPrice = twoDecimals(Number(unitPrice));
+				dispatch('updateLineItem');
+			}}
 			step="0.01"
 			min="0"
 			class="line-item text-right"
@@ -39,6 +42,9 @@
 			type="number"
 			name="quanity"
 			bind:value={lineItem.quantity}
+			on:blur={() => {
+				dispatch('updateLineItem');
+			}}
 			min="0"
 			class="line-item text-center"
 		/>

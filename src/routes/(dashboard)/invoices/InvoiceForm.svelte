@@ -1,8 +1,12 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { clients, loadClients } from '$lib/stores/ClientStore';
+	import { slide } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 	import LineItemRows from './LineItemRows.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Trash from '$lib/components/Icon/Trash.svelte';
+	import { states } from '$lib/utils/states';
 
 	const blankLineItem = {
 		id: uuidv4(),
@@ -12,6 +16,7 @@
 	};
 
 	let lineItems: LineItem[] = [{ ...blankLineItem }];
+	let isNewClient: boolean = false;
 
 	const addLineItem = () => {
 		lineItems = [...lineItems, { ...blankLineItem, id: uuidv4() }];
@@ -20,21 +25,54 @@
 	const removeLineItem = (event) => {
 		lineItems = lineItems.filter((item) => item.id !== event.detail);
 	};
+
+	const updateLineItem = () => {
+		lineItems = lineItems;
+	};
+
+	onMount(() => {
+		loadClients();
+	});
 </script>
 
 <h2 class="mb-7 font-sansSerif text-3xl font-bold text-daisyBush">Add an Invoice</h2>
 
 <form class="grid grid-cols-6 gap-x-5">
 	<!-- CLIENT INFO -->
-	<div class="field col-span-2">
-		<label for="client">Client</label>
-		<select name="client" id="client">
-			<option value="zeal">ZEAL</option>
-		</select>
-	</div>
-	<div class="field col-span-2 gap-x-5 flex items-end">
-		<div class="text-base font-bold text-monsoon leading-[3.5rem]">or</div>
-		<Button label="+ Client" style="outline" isAnimated={false} onClick={() => {}} />
+	<div class="field col-span-4">
+		{#if !isNewClient}
+			<label for="client">Client</label>
+			<div class="flex items-end gap-x-5">
+				<select name="client" id="client">
+					{#each $clients as client}
+						<option value={client.id}>{client.name}</option>
+					{/each}
+				</select>
+				<div class="text-base font-bold text-monsoon leading-[3.5rem]">or</div>
+				<Button
+					label="+ Client"
+					style="outline"
+					isAnimated={false}
+					onClick={() => {
+						isNewClient = true;
+					}}
+				/>
+			</div>
+		{:else}
+			<label for="newClient">New Client</label>
+			<div class="flex items-end gap-x-5">
+				<input type="text" name="newClient" />
+				<div class="text-base font-bold text-monsoon leading-[3.5rem]">or</div>
+				<Button
+					label="Existing Client"
+					style="outline"
+					isAnimated={false}
+					onClick={() => {
+						isNewClient = false;
+					}}
+				/>
+			</div>
+		{/if}
 	</div>
 
 	<!-- INVOICE ID -->
@@ -42,6 +80,41 @@
 		<label for="id">Invoice ID</label>
 		<input type="number" name="id" />
 	</div>
+
+	<!-- NEW CLIENT -->
+	{#if isNewClient}
+		<div class="field grid col-span-6 gap-x-5" transition:slide>
+			<div class="field col-span-6">
+				<label for="email">Client's Email</label>
+				<input type="email" name="email" id="email" />
+			</div>
+
+			<div class="field col-span-6">
+				<label for="street">Street</label>
+				<input type="text" name="street" id="street" />
+			</div>
+
+			<div class="field col-span-2">
+				<label for="city">City</label>
+				<input type="text" name="city" id="city" />
+			</div>
+
+			<div class="field col-span-2">
+				<label for="state">State</label>
+				<select name="state" id="state">
+					<option />
+					{#each states as state}
+						<option value={state.value}>{state.name}</option>
+					{/each}
+				</select>
+			</div>
+
+			<div class="field col-span-2">
+				<label for="zip">Zip</label>
+				<input type="text" name="zip" id="zip" />
+			</div>
+		</div>
+	{/if}
 
 	<!-- DUE DATE -->
 	<div class="field col-span-2">
@@ -63,7 +136,12 @@
 
 	<!-- LINE ITEMS -->
 	<div class="field col-span-6">
-		<LineItemRows {lineItems} on:addLineItem={addLineItem} on:removeLineItem={removeLineItem} />
+		<LineItemRows
+			{lineItems}
+			on:addLineItem={addLineItem}
+			on:removeLineItem={removeLineItem}
+			on:updateLineItem={updateLineItem}
+		/>
 	</div>
 
 	<!-- NOTES -->
