@@ -3,21 +3,22 @@
 	import View from '$lib/components/Icon/View.svelte';
 	import ThreeDots from '$lib/components/Icon/ThreeDots.svelte';
 	import AdditionalOptions from '$lib/components/AdditionalOptions.svelte';
-	import Button from '$lib/components/Button.svelte';
-	import Modal from '$lib/components/Modal.svelte';
+	import ConfirmDelete from './ConfirmDelete.svelte';
+	import SlidePanel from '$lib/components/SlidePanel.svelte';
+	import InvoiceForm from './InvoiceForm.svelte';
 	import Edit from '$lib/components/Icon/Edit.svelte';
 	import Send from '$lib/components/Icon/Send.svelte';
 	import Trash from '$lib/components/Icon/Trash.svelte';
 
 	import { centsToDollars, sumLineItems } from '$lib/utils/moneyHelpers';
 	import { convertDate, isLate } from '$lib/utils/dateHelpers';
-	import { deleteInvoice } from '$lib/stores/InvoiceStore';
 
 	export let invoice: Invoice;
 
 	let isAdditionalMenuShowing = false;
 	let isOptionsDisabled = false;
 	let isModalShowing = false;
+	let isInvoiceFormShowing = false;
 
 	const handleDelete = () => {
 		isModalShowing = true;
@@ -25,8 +26,10 @@
 	};
 
 	const handleEdit = () => {
-		console.log('editing');
+		isInvoiceFormShowing = true;
+		isAdditionalMenuShowing = false;
 	};
+
 	const handleSendInvoice = () => {
 		console.log('sending');
 	};
@@ -81,36 +84,19 @@
 	</div>
 </div>
 
-<Modal isVisible={isModalShowing} on:close={() => (isModalShowing = false)}>
-	<div class="flex flex-col justify-between items-center gap-6 h-full min-h-[175px]">
-		<div class="text-center text-xl font-bold text-daisyBush">
-			Are you sure you want to delete this invoice to <span class="text-scarlet">
-				{invoice.client.name}
-			</span>
-			for
-			<span class="text-scarlet">${centsToDollars(sumLineItems(invoice.lineItems))}</span>?
-		</div>
-		<div class="flex gap-4">
-			<Button
-				isAnimated={false}
-				label="Cancel"
-				onClick={() => {
-					isModalShowing = false;
-				}}
-				style="secondary"
-			/>
-			<Button
-				isAnimated={false}
-				label="Yes, delete it."
-				onClick={() => {
-					deleteInvoice(invoice);
-					isModalShowing = false;
-				}}
-				style="destructive"
-			/>
-		</div>
-	</div>
-</Modal>
+<!-- CONFIRM DELETE MODAL -->
+<ConfirmDelete {invoice} {isModalShowing} on:close={() => (isModalShowing = false)} />
+
+<!-- SLIDE PANEL -->
+{#if isInvoiceFormShowing}
+	<SlidePanel
+		on:closePanel={() => {
+			isInvoiceFormShowing = false;
+		}}
+	>
+		<InvoiceForm {invoice} formState="edit" closePanel={() => (isInvoiceFormShowing = false)} />
+	</SlidePanel>
+{/if}
 
 <style lang="postcss">
 	/* default grid-template-areas (MOBILE) */

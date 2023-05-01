@@ -22,7 +22,7 @@
 
 {#if isVisible}
 	<Portal>
-		<Overlay />
+		<Overlay className="!z-modalOverlay" />
 		<div class="fixed inset-0 z-modal center">
 			<div class="relative max-w-[450px] min-h-[230px] w-full rounded-lg bg-white px-10 py-7">
 				<button

@@ -9,7 +9,7 @@
 	let dispatch = createEventDispatcher();
 
 	let subtotal: string = '0.00';
-	let discount: number;
+	export let discount: number = 0;
 	let discountedAmount: string = '0.00';
 	let total: string = '0.00';
 
@@ -20,7 +20,7 @@
 	$: if (subtotal && discount) {
 		discountedAmount = centsToDollars(sumLineItems(lineItems) * (discount / 100));
 	}
-	$: total = twoDecimals(parseInt(subtotal) - parseInt(discountedAmount));
+	$: total = twoDecimals(Number(subtotal) - Number(discountedAmount));
 </script>
 
 <div class="invoice-line-item border-b-2 border-daisyBush pb-2">
@@ -75,7 +75,6 @@
 
 <div class="invoice-line-item">
 	<div class="col-span-6">
-		<!-- doesn't add up total correctly if discountedAmount is not an even amount. need to fix calculations to use cents accurately. -->
 		<CircledAmount label="Total:" amount={`$${total}`} />
 	</div>
 </div>

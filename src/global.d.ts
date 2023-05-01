@@ -10,6 +10,7 @@ interface Invoice {
 	notes?: string;
 	terms?: string;
 	createdAt: string;
+	discount?: number;
 }
 
 interface Client {
@@ -17,10 +18,10 @@ interface Client {
 	id: string;
 	name: string;
 	email: string;
-	street: string;
-	city: string;
-	state: string;
-	zip: string;
+	street?: string;
+	city?: string;
+	state?: string;
+	zip?: string;
 }
 
 interface LineItem {
