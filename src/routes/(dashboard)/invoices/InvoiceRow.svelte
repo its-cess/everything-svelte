@@ -10,7 +10,7 @@
 	import Send from '$lib/components/Icon/Send.svelte';
 	import Trash from '$lib/components/Icon/Trash.svelte';
 
-	import { centsToDollars, sumLineItems } from '$lib/utils/moneyHelpers';
+	import { centsToDollars, invoiceTotal } from '$lib/utils/moneyHelpers';
 	import { convertDate, isLate } from '$lib/utils/dateHelpers';
 
 	export let invoice: Invoice;
@@ -60,7 +60,7 @@
 		{invoice.client.name}
 	</div>
 	<div class="font-mono text-lg font-bold amount text-right">
-		${centsToDollars(sumLineItems(invoice.lineItems))}
+		${centsToDollars(invoiceTotal(invoice.lineItems, invoice.discount))}
 	</div>
 	<div class="text-sm lg:text-lg center viewButton">
 		<a href="#" class="text-pastelPurple hover:text-daisyBush hidden lg:flex"><View /></a>

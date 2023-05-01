@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import Trash from '$lib/components/Icon/Trash.svelte';
-	import { twoDecimals, dollarsToCents } from '$lib/utils/moneyHelpers';
+	import { twoDecimals, dollarsToCents, centsToDollars } from '$lib/utils/moneyHelpers';
 
 	export let lineItem: LineItem;
 	export let canDelete: boolean = false;
 	export let isRequired: boolean = false;
 
-	let unitPrice: string = twoDecimals(lineItem.amount / lineItem.quantity);
-	let amount: string = twoDecimals(lineItem.amount);
+	let unitPrice: string = centsToDollars(lineItem.amount / lineItem.quantity);
+	let amount: string = centsToDollars(lineItem.amount);
 
 	$: {
 		amount = twoDecimals(lineItem.quantity * Number(unitPrice));
@@ -18,8 +18,9 @@
 	let dispatch = createEventDispatcher();
 </script>
 
-<div class="invoice-line-item border-b-2 border-fog py-2">
-	<div>
+<div class="invoice-line-item border-b-2 border-fog py-4 sm:py-2">
+	<div class="description">
+		<label for="description" class="line-item-label">Description</label>
 		<input
 			type="text"
 			name="description"
@@ -29,7 +30,8 @@
 		/>
 	</div>
 
-	<div>
+	<div class="unitPrice">
+		<label for="unitPrice" class="line-item-label text-right">Unit Price</label>
 		<input
 			type="number"
 			name="unitPrice"
@@ -45,7 +47,8 @@
 		/>
 	</div>
 
-	<div>
+	<div class="qty">
+		<label for="quantity" class="line-item-label text-center">Qty</label>
 		<input
 			type="number"
 			name="quanity"
@@ -59,7 +62,8 @@
 		/>
 	</div>
 
-	<div>
+	<div class="amount">
+		<label for="amount" class="line-item-label text-right">Amount</label>
 		<input
 			type="number"
 			name="amount"
@@ -71,7 +75,7 @@
 		/>
 	</div>
 
-	<div>
+	<div class="trash">
 		{#if canDelete}
 			<button
 				on:click|preventDefault={() => {
@@ -107,5 +111,9 @@
 	input[type='number']:disabled,
 	input[type='text']:disabled {
 		@apply border-b-0 bg-transparent px-0;
+	}
+
+	.line-item-label {
+		@apply block sm:hidden;
 	}
 </style>

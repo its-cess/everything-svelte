@@ -43,7 +43,7 @@
 {/if}
 
 <div class="invoice-line-item">
-	<div class="col-span-2">
+	<div class="col-span-1 sm:col-span-2">
 		<Button
 			isAnimated={false}
 			label="+ Line Item"
@@ -58,7 +58,7 @@
 </div>
 
 <div class="invoice-line-item">
-	<div class="col-span-2 text-right font-bold py-5 text-monsoon">Discount:</div>
+	<div class="col-span-1 sm:col-span-2 text-right font-bold py-5 text-monsoon">Discount:</div>
 	<div class="relative">
 		<input
 			type="number"
@@ -66,6 +66,9 @@
 			min="0"
 			max="100"
 			bind:value={discount}
+			on:change={() => {
+				dispatch('updateDiscount', { discount });
+			}}
 			class="line-item h-10 w-full border-b-2 border-dashed border-stone-300 pr-4 text-right focus:border-solid focus:border-lavenderIndigo focus:outline-none"
 		/>
 		<span class="absolute right-0 top-2 text-mono">%</span>
@@ -74,13 +77,13 @@
 </div>
 
 <div class="invoice-line-item">
-	<div class="col-span-6">
+	<div class="col-span-3 sm:col-span-6">
 		<CircledAmount label="Total:" amount={`$${total}`} />
 	</div>
 </div>
 
 <style lang="postcss">
 	.table-header {
-		@apply text-sm font-bold text-daisyBush;
+		@apply hidden text-sm font-bold text-daisyBush sm:block;
 	}
 </style>
