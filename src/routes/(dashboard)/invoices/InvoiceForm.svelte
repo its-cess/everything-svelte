@@ -5,6 +5,8 @@
 
 	import { clients, loadClients, addClient } from '$lib/stores/ClientStore';
 	import { addInvoice, updateInvoice } from '$lib/stores/InvoiceStore';
+	import { snackbar } from '$lib/stores/SnackbarStore';
+
 	import { states } from '$lib/utils/states';
 	import { today } from '$lib/utils/dateHelpers';
 
@@ -62,8 +64,16 @@
 
 		if (formState === 'create') {
 			addInvoice(invoice);
+			snackbar.send({
+				message: 'Your invoice was successfully created.',
+				type: 'success'
+			});
 		} else {
 			updateInvoice(invoice);
+			snackbar.send({
+				message: 'Your invoice was successfully updated.',
+				type: 'success'
+			});
 		}
 
 		closePanel();
