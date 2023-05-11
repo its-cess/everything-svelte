@@ -42,6 +42,11 @@
 		@apply border-2 border-lavenderIndigo outline-none;
 	}
 
+	input[type=number]:disabled {
+		@apply appearance-none;
+		-moz-appearance: textfield;
+	}
+
 	/* sets the svg fill color to whatever the current text color is */
 	svg {
 		@apply fill-current;

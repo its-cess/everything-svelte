@@ -9,6 +9,7 @@
 		| 'outline'
 		| 'textOnly'
 		| 'textOnlyDestructive' = 'primary';
+	export let height: 'short' | 'regular' = 'regular';
 	export let isAnimated = true;
 	export let iconLeft: (new (...args: any[]) => SvelteComponent) | null = null;
 	export let iconRight: (new (...args: any[]) => SvelteComponent) | null = null;
@@ -23,6 +24,7 @@
 	class:outline={style === 'outline'}
 	class:textOnly={style === 'textOnly'}
 	class:textOnlyDestructive={style === 'textOnlyDestructive'}
+	class:short={height === 'short'}
 	class:isAnimated
 >
 	{#if iconLeft}
@@ -66,5 +68,9 @@
 
 	.textOnlyDestructive {
 		@apply bg-transparent px-0 text-scarlet underline hover:no-underline;
+	}
+
+	.short {
+		@apply !py-1;
 	}
 </style>
