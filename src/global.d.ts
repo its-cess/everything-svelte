@@ -31,6 +31,15 @@ interface LineItem {
 	amount: amount;
 }
 
+interface Settings {
+	myName: string
+	email: string
+	street: string
+	city: string
+	state: string
+	zip: string
+}
+
 type NotificationType = 'success' | 'error' | 'info' | 'warning';
 
 interface Snackbar {

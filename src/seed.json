@@ -182,5 +182,13 @@
 			],
 			"subject": "Website"
 		}
-	]
+	],
+	"settings": {
+	"myName": "Cecily Toro",
+	"email": "cecily@email.com",
+	"street": "1234 Main Street",
+	"city": "Cincinnati",
+	"state": "OH",
+	"zip": "45111"
+	}
 }
