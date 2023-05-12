@@ -19,7 +19,7 @@
 	}}
 />
 
-<div class="bg-whisper h-full min-h-screen w-screen pt-12 pb-32">
+<div class="bg-whisper h-full min-h-screen w-screen pt-16 lg:pt-12 pb-32">
 	<main class="mx-auto max-w-screen-lg min-h-screen">
 		<!-- previousPage comes from the afterNavigation callback. if it exists, send them to the prevoiusPage, if there is no previous page, send them to /invoices page -->
 		<a
