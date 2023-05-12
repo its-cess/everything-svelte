@@ -66,12 +66,14 @@
 			/>
 		{/if}
 	</div>
-	<div class="font-bold py-5 text-right text-monsoon">Subtotal:</div>
+	<div class="font-bold py-5 text-right text-monsoon print:col-span-3">Subtotal:</div>
 	<div class="py-5 text-right font-mono">${subtotal}</div>
 </div>
 
 <div class="invoice-line-item">
-	<div class="col-span-1 sm:col-span-2 text-right font-bold py-5 text-monsoon">Discount:</div>
+	<div class="col-span-1 sm:col-span-2 text-right font-bold py-5 text-monsoon print:col-span-3">
+		Discount:
+	</div>
 	<div class="relative">
 		<input
 			type="number"
@@ -83,7 +85,7 @@
 			on:change={() => {
 				dispatch('updateDiscount', { discount });
 			}}
-			class="line-item h-10 w-full border-b-2 border-dashed border-stone-300 pr-4 text-right focus:border-solid focus:border-lavenderIndigo focus:outline-none"
+			class="line-item h-10 w-full border-b-2 border-dashed border-stone-300 pr-4 text-right focus:border-solid focus:border-lavenderIndigo focus:outline-none print:pr-0"
 		/>
 		<span class="absolute right-0 top-2 text-mono">%</span>
 	</div>
@@ -91,13 +93,13 @@
 </div>
 
 <div class="invoice-line-item">
-	<div class="col-span-3 sm:col-span-6">
+	<div class="col-span-3 sm:col-span-6 print:col-span-6">
 		<CircledAmount label="Total:" amount={`$${total}`} />
 	</div>
 </div>
 
 <style lang="postcss">
 	.table-header {
-		@apply hidden text-sm font-bold text-daisyBush sm:block;
+		@apply hidden text-sm font-bold text-daisyBush print:block sm:block;
 	}
 </style>

@@ -39,7 +39,7 @@
 </script>
 
 <div
-	class="fixed z-0 mb-16 flex flex-col md:flex-row gap-y-5 px-4 lg:px-0 justify-between w-full max-w-screen-lg"
+	class="fixed z-0 mb-16 flex flex-col md:flex-row gap-y-5 px-4 lg:px-0 justify-between w-full max-w-screen-lg print:hidden"
 >
 	<h1 class="text-3xl font-bold text-daisyBush">Invoice</h1>
 	<div class="flex items-center gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
@@ -62,9 +62,9 @@
 </div>
 
 <div
-	class="relative top-32 z-10 grid grid-cols-6 gap-x-5 gap-y-8 bg-white py-8 md:py-16 px-5 md:px-32 shadow-invoice"
+	class="relative top-32 z-10 grid grid-cols-6 gap-x-5 gap-y-8 bg-white py-8 md:py-16 px-5 md:px-32 shadow-invoice print:py-0 print:shadow-none print:top-0"
 >
-	<div class="sm:col-span-3 col-span-6">
+	<div class="sm:col-span-3 col-span-6 print:col-span-3">
 		<img
 			src="/images/logo.png"
 			srcset="/images/logo@2x.png 2x, /images/logo.png 1x"
@@ -72,7 +72,7 @@
 		/>
 	</div>
 
-	<div class="col-span-6 sm:col-span-2 sm:col-start-5 pt-4">
+	<div class="col-span-6 sm:col-span-2 sm:col-start-5 pt-4 print:col-span-3">
 		<!-- had to add if check for $settings, because it needed to wait for it to load the settings before it could display the info.-->
 		{#if $settings && $settings.myName}
 			<div class="label">From</div>
@@ -93,7 +93,7 @@
 		{/if}
 	</div>
 
-	<div class="col-span-6 sm:col-span-3">
+	<div class="col-span-6 sm:col-span-3 print:col-span-3">
 		<div class="label">Bill To:</div>
 		<p>
 			<strong>{data.invoice.client.name}</strong><br />
