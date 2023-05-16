@@ -97,6 +97,10 @@
 		@apply absolute top-0 right-0 sm:relative;
 		grid-area: trash;
 	}
+
+	.client-table {
+		@apply grid grid-cols-clientTableMobile lg:grid-cols-clientTable mb-3 w-full gap-x-4 px-4 lg:px-6;
+	}
 	
 	.field {
 		@apply mb-6;
