@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { centsToDollars, sumInvoices } from '$lib/utils/moneyHelpers';
 	import Tag from '$lib/components/Tag.svelte';
 	import View from '$lib/components/Icon/View.svelte';
 	import ThreeDots from '$lib/components/Icon/ThreeDots.svelte';
@@ -11,6 +12,26 @@
 	export let client: Client;
 
 	let isAdditionalMenuShowing = false;
+
+	const receivedInvoices = () => {
+		if (client?.invoices) {
+			//find invoices that have been paid
+			const paidInvoices = client.invoices?.filter((invoice) => invoice.invoiceStatus === 'paid');
+			//get the sum of all the invoices that have been paid
+			return sumInvoices(paidInvoices);
+		}
+		return 0;
+	};
+
+	const balanceInvoices = () => {
+		if (client?.invoices) {
+			//find invoices that have NOT been paid
+			const paidInvoices = client.invoices?.filter((invoice) => invoice.invoiceStatus !== 'paid');
+			//get the sum of all the invoices that have been paid
+			return sumInvoices(paidInvoices);
+		}
+		return 0;
+	};
 </script>
 
 <div class="client-table client-row rounded-lg bg-white py-3 lg:py-6 shadow-tableRow">
@@ -18,8 +39,12 @@
 	<div class="client-name truncate whitespace-nowrap text-base font-bold lg:text-xl">
 		{client.name}
 	</div>
-	<div class="received text-right font-mono text-sm lg:text-lg font-bold">$504.00</div>
-	<div class="balance text-right font-mono text-sm lg:text-lg font-bold text-scarlet">$240.00</div>
+	<div class="received text-right font-mono text-sm lg:text-lg font-bold">
+		${centsToDollars(receivedInvoices())}
+	</div>
+	<div class="balance text-right font-mono text-sm lg:text-lg font-bold text-scarlet">
+		${centsToDollars(balanceInvoices())}
+	</div>
 	<div
 		class="view relative hidden lg:flex justify-center items-center text-pastelPurple hover:text-daisyBush"
 	>
