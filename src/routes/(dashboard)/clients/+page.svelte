@@ -6,11 +6,19 @@
 	import Button from '$lib/components/Button.svelte';
 	import ClientRowHeader from './ClientRowHeader.svelte';
 	import ClientRow from './ClientRow.svelte';
-	import { states } from '$lib/utils/states';
+	import BlankState from './BlankState.svelte';
+	import SlidePanel from '$lib/components/SlidePanel.svelte';
+	import ClientForm from './ClientForm.svelte';
 
 	onMount(() => {
 		loadClients();
 	});
+
+	let isClientFormShowing = false;
+
+	const closePanel = () => {
+		isClientFormShowing = false;
+	};
 </script>
 
 <svelte:head><title>Clients | The Dollar Holler</title></svelte:head>
@@ -19,18 +27,18 @@
 	class="flex flex-col-reverse md:flex-row justify-between items-start md:items-center mb-7 lg:mb-16 gap-y-6 md:gap-y-4"
 >
 	<!-- SEARCH FIELD -->
-	<!-- {#if $invoices.length > 0} -->
-	<Search />
-	<!-- {:else}
+	{#if $clients.length > 0}
+		<Search />
+	{:else}
 		<div />
-	{/if} -->
+	{/if}
 
-	<!-- NEW INVOICE BUTTON -->
+	<!-- NEW CLIENT BUTTON -->
 	<div>
 		<Button
 			label="+ Client"
 			onClick={() => {
-				// isInvoiceFormShowing = true;
+				isClientFormShowing = true;
 			}}
 		/>
 	</div>
@@ -41,7 +49,7 @@
 	{#if $clients === null}
 		Loading...
 	{:else if $clients.length <= 0}
-		Blank State
+		<BlankState />
 	{:else}
 		<!-- client header row -->
 		<ClientRowHeader />
@@ -54,3 +62,9 @@
 		</div>
 	{/if}
 </div>
+
+{#if isClientFormShowing}
+	<SlidePanel on:closePanel={closePanel}>
+		<ClientForm {closePanel} />
+	</SlidePanel>
+{/if}

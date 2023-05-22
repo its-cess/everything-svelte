@@ -9,9 +9,18 @@
 	import Archive from '$lib/components/Icon/Archive.svelte';
 	import Trash from '$lib/components/Icon/Trash.svelte';
 
+	import SlidePanel from '$lib/components/SlidePanel.svelte';
+	import ClientForm from './ClientForm.svelte';
+
 	export let client: Client;
 
 	let isAdditionalMenuShowing = false;
+
+	let isClientFormShowing = false;
+
+	const closePanel = () => {
+		isClientFormShowing = false;
+	};
 
 	const receivedInvoices = () => {
 		if (client?.invoices) {
@@ -32,6 +41,11 @@
 		}
 		return 0;
 	};
+
+	const handleEdit = () => {
+		isClientFormShowing = true;
+		isAdditionalMenuShowing = false;
+	};
 </script>
 
 <div class="client-table client-row rounded-lg bg-white py-3 lg:py-6 shadow-tableRow">
@@ -48,7 +62,7 @@
 	<div
 		class="view relative hidden lg:flex justify-center items-center text-pastelPurple hover:text-daisyBush"
 	>
-		<a href="#"><View /></a>
+		<a href={`/clients/${client.id}`}><View /></a>
 	</div>
 	<div class="three-dots relative hidden lg:flex justify-center items-center">
 		<button
@@ -62,7 +76,7 @@
 		{#if isAdditionalMenuShowing}
 			<AdditionalOptions
 				options={[
-					{ label: 'Edit', icon: Edit, onClick: () => console.log('editing'), disabled: false },
+					{ label: 'Edit', icon: Edit, onClick: handleEdit, disabled: false },
 					{
 						label: 'Activate',
 						icon: Activate,
@@ -87,6 +101,12 @@
 		{/if}
 	</div>
 </div>
+
+{#if isClientFormShowing}
+	<SlidePanel on:closePanel={closePanel}>
+		<ClientForm {closePanel} formStatus="edit" {client} />
+	</SlidePanel>
+{/if}
 
 <style lang="postcss">
 	.client-row {
