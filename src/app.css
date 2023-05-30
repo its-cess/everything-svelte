@@ -109,6 +109,14 @@
 	.button {
 		@apply flex items-center relative whitespace-nowrap rounded-lg px-5 lg:px-10 py-2 lg:py-3 font-sansSerif text-base lg:text-xl font-black
 	}
+
+	.auth-button {
+		@apply mt-6 min-h-[3.5rem] w-full rounded-lg bg-robinEggBlue text-daisyBush py-3 px-4 text-xl font-bold hover:-translate-y-1 hover:shadow-lg transition-all duration-200
+	}
+
+	.auth-heading {
+		@apply mb-4 text-[2.5rem] font-black text-goldenFizz;
+	}
 }
 
 @layer utilities {
