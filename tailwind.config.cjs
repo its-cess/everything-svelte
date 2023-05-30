@@ -61,7 +61,9 @@ module.exports = {
 				slidePanel: 997,
 				overylay: 996,
 				navBarToggle: 91,
-				navBar: 90
+				navBar: 90,
+				row: 5,
+				rowActions: 1
 			}
 		}
 	},

@@ -6,12 +6,15 @@
 	import ConfirmDelete from './ConfirmDelete.svelte';
 	import SlidePanel from '$lib/components/SlidePanel.svelte';
 	import InvoiceForm from './InvoiceForm.svelte';
+	import CancelIcon from '$lib/components/Icon/CancelIcon.svelte';
 	import Edit from '$lib/components/Icon/Edit.svelte';
 	import Send from '$lib/components/Icon/Send.svelte';
 	import Trash from '$lib/components/Icon/Trash.svelte';
 
 	import { centsToDollars, invoiceTotal } from '$lib/utils/moneyHelpers';
 	import { convertDate, isLate } from '$lib/utils/dateHelpers';
+	import { clickOutside } from '$lib/actions/ClickOutside';
+	import { swipe } from '$lib/actions/Swipe';
 
 	export let invoice: Invoice;
 
@@ -19,6 +22,7 @@
 	let isOptionsDisabled = false;
 	let isModalShowing = false;
 	let isInvoiceFormShowing = false;
+	let triggerReset = false;
 
 	const handleDelete = () => {
 		isModalShowing = true;
@@ -50,40 +54,77 @@
 	};
 </script>
 
-<div
-	class="invoice-table invoice-row items-center bg-white py-3 lg:py-6 rounded-lg shadow-tableRow"
->
-	<div class="status"><Tag label={getInvoiceLabel()} className="ml-auto lg:ml-0" /></div>
-	<div class="text-sm lg:text-lg dueDate">{convertDate(invoice.dueDate)}</div>
-	<div class="text-sm lg:text-lg invoiceNumber">{invoice.invoiceNumber}</div>
-	<div class="text-base lg:text-xl font-bold clientName whitespace-nowrap truncate">
-		{invoice.client.name}
-	</div>
-	<div class="font-mono text-lg font-bold amount text-right">
-		${centsToDollars(invoiceTotal(invoice.lineItems, invoice.discount))}
-	</div>
-	<div class="text-sm lg:text-lg center viewButton">
-		<a
-			href={`/invoices/${invoice.id}`}
-			class="text-pastelPurple hover:text-daisyBush hidden lg:flex"><View /></a
+<div class="relative">
+	<div
+		use:swipe={{ triggerReset }}
+		on:outOfView={() => {
+			triggerReset = false;
+		}}
+		class="invoice-table invoice-row z-row relative items-center bg-white py-3 lg:py-6 rounded-lg shadow-tableRow"
+	>
+		<div class="status"><Tag label={getInvoiceLabel()} className="ml-auto lg:ml-0" /></div>
+		<div class="text-sm lg:text-lg dueDate">{convertDate(invoice.dueDate)}</div>
+		<div class="text-sm lg:text-lg invoiceNumber">{invoice.invoiceNumber}</div>
+		<div class="text-base lg:text-xl font-bold clientName whitespace-nowrap truncate">
+			{invoice.client.name}
+		</div>
+		<div class="font-mono text-lg font-bold amount text-right">
+			${centsToDollars(invoiceTotal(invoice.lineItems, invoice.discount))}
+		</div>
+		<div class="text-sm lg:text-lg center viewButton">
+			<a
+				href={`/invoices/${invoice.id}`}
+				class="text-pastelPurple hover:text-daisyBush hidden lg:flex"><View /></a
+			>
+		</div>
+		<div
+			class="text-sm lg:text-lg center moreButton relative"
+			use:clickOutside={() => (isAdditionalMenuShowing = false)}
 		>
+			<button
+				class="text-pastelPurple hover:text-daisyBush hidden lg:flex"
+				on:click={() => {
+					isAdditionalMenuShowing = !isAdditionalMenuShowing;
+				}}><ThreeDots /></button
+			>
+			{#if isAdditionalMenuShowing}
+				<AdditionalOptions
+					options={[
+						{ label: 'Edit', icon: Edit, onClick: handleEdit, disabled: isOptionsDisabled },
+						{ label: 'Delete', icon: Trash, onClick: handleDelete, disabled: false },
+						{ label: 'Send', icon: Send, onClick: handleSendInvoice, disabled: isOptionsDisabled }
+					]}
+				/>
+			{/if}
+		</div>
 	</div>
-	<div class="text-sm lg:text-lg center moreButton relative">
+
+	<!-- swipe to reveal -->
+	<div class="flex w-full items-center justify-around absolute inset-0 h-full z-rowActions">
 		<button
-			class="text-pastelPurple hover:text-daisyBush hidden lg:flex"
+			class="action-button"
 			on:click={() => {
-				isAdditionalMenuShowing = !isAdditionalMenuShowing;
-			}}><ThreeDots /></button
+				triggerReset = true;
+			}}
 		>
-		{#if isAdditionalMenuShowing}
-			<AdditionalOptions
-				options={[
-					{ label: 'Edit', icon: Edit, onClick: handleEdit, disabled: isOptionsDisabled },
-					{ label: 'Delete', icon: Trash, onClick: handleDelete, disabled: false },
-					{ label: 'Send', icon: Send, onClick: handleSendInvoice, disabled: isOptionsDisabled }
-				]}
-			/>
+			<CancelIcon width={32} height={32} />Cancel
+		</button>
+
+		{#if !isOptionsDisabled}
+			<button class="action-button" on:click={handleEdit}>
+				<Edit width={32} height={32} />Edit
+			</button>
+			<button class="action-button" on:click={handleSendInvoice}>
+				<Send width={32} height={32} />Send
+			</button>
 		{/if}
+
+		<button class="action-button" on:click={handleDelete}>
+			<Trash width={32} height={32} />Delete
+		</button>
+		<a href={`/invoices/${invoice.id}`} class="action-button" on:click={handleDelete}>
+			<View width={32} height={32} />View
+		</a>
 	</div>
 </div>
 
@@ -102,6 +143,10 @@
 {/if}
 
 <style lang="postcss">
+	.action-button {
+		@apply flex cursor-pointer flex-col items-center justify-center font-bold	text-daisyBush;
+	}
+
 	/* default grid-template-areas (MOBILE) */
 	.invoice-row {
 		grid-template-areas:

@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	export let className: string = '';
 </script>
 
 <svelte:head>
 	<!-- adding to svelte:head makes it so that this css is applied to the document head only when the Overlay component is available -->
-	<!-- adding to svelte:head makes it so that this css is applied to the document head only when the Overlay component is available -->
-	<!-- adding to svelte:head makes it so that this css is applied to the document head only when the Overlay component is available -->
+
 	<!-- adding to svelte:head makes it so that this css is applied to the document head only when the Overlay component is available -->
 	<style lang="postcss">
 		body {
@@ -14,4 +14,4 @@
 	</style>
 </svelte:head>
 
-<div class={`fixed inset-0 bg-blueGem opacity-60 z-overlay ${className}`} />
+<div class={`fixed inset-0 bg-blueGem opacity-60 z-overlay ${className}`} transition:fade />

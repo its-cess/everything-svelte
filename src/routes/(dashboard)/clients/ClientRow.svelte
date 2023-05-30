@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { centsToDollars, sumInvoices } from '$lib/utils/moneyHelpers';
+	import { clickOutside } from '$lib/actions/ClickOutside';
 	import Tag from '$lib/components/Tag.svelte';
 	import View from '$lib/components/Icon/View.svelte';
 	import ThreeDots from '$lib/components/Icon/ThreeDots.svelte';
@@ -64,7 +65,12 @@
 	>
 		<a href={`/clients/${client.id}`}><View /></a>
 	</div>
-	<div class="three-dots relative hidden lg:flex justify-center items-center">
+	<div
+		class="three-dots relative hidden lg:flex justify-center items-center"
+		use:clickOutside={() => {
+			isAdditionalMenuShowing = false;
+		}}
+	>
 		<button
 			class="text-pastelPurple hover:text-daisyBush"
 			on:click={() => {
