@@ -1,10 +1,21 @@
+import supabase from '$lib/utils/supabase';
 import { writable } from 'svelte/store';
-import data from '../../seed.json';
 
 export const invoices = writable<Invoice[]>([]);
 
-export const loadInvoices = () => {
-	invoices.set(data.invoices);
+export const loadInvoices = async () => {
+	const { data, error } = await supabase
+		//selecting from the 'invoice' table
+		.from('invoice')
+		//specifically selecting everything, including the client id and name, and all the lineItems
+		.select('*, client(id, name), lineItems(*)')
+
+	if (error) {
+		console.error(error);
+		return
+	}
+
+	invoices.set(data as Invoice[]);
 };
 
 export const addInvoice = (invoiceToAdd: Invoice) => {
@@ -25,6 +36,18 @@ export const deleteInvoice = (invoiceToDelete: Invoice) => {
 	return invoiceToDelete;
 };
 
-export const getInvoiceById = (id: string) => {
-	return data.invoices.find(invoice => invoice.id === id);
+export const getInvoiceById = async (id: string) => {
+	const { data, error } = await supabase
+		.from('invoice')
+		.select('*, client(id, name), lineItems(*)')
+		//equals('column we are looking for', the value we are looking for)
+		.eq('id', id)
+		if (error) {
+			console.error(error);
+		}
+
+		if (data && data[0]) {
+			return data[0] as Invoice;
+		}
+		console.warn('cannot find invoice with id: ' + id);
 }

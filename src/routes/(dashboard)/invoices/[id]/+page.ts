@@ -6,8 +6,8 @@ interface Props {
   }
 }
 
-export function load( { params }: Props) {
+export async function load( { params }: Props) {
   const id = params?.id;
-  const invoice = getInvoiceById(id);
+  const invoice = await getInvoiceById(id);
   return { invoice };
 }

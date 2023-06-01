@@ -22,7 +22,7 @@ interface Client {
 	city?: string;
 	state?: string;
 	zip?: string;
-	invoices?: Invoice[]
+	invoice?: Invoice[]
 }
 
 interface LineItem {
