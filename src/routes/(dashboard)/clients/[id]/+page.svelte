@@ -35,30 +35,30 @@
 	};
 
 	const getDraft = (): string => {
-		if (!data.client.invoices || data.client.invoices.length < 1) return '0.00';
-		const draftInvoices = data.client.invoices.filter(
+		if (!data.client.invoice || data.client.invoice.length < 1) return '0.00';
+		const draftInvoices = data.client.invoice.filter(
 			(invoice) => invoice.invoiceStatus === 'draft'
 		);
 		return centsToDollars(sumInvoices(draftInvoices));
 	};
 
 	const getPaid = (): string => {
-		if (!data.client.invoices || data.client.invoices.length < 1) return '0.00';
-		const paidInvoices = data.client.invoices.filter((invoice) => invoice.invoiceStatus === 'paid');
+		if (!data.client.invoice || data.client.invoice.length < 1) return '0.00';
+		const paidInvoices = data.client.invoice.filter((invoice) => invoice.invoiceStatus === 'paid');
 		return centsToDollars(sumInvoices(paidInvoices));
 	};
 
 	const getTotalOverdue = (): string => {
-		if (!data.client.invoices || data.client.invoices.length < 1) return '0.00';
-		const paidInvoices = data.client.invoices.filter(
+		if (!data.client.invoice || data.client.invoice.length < 1) return '0.00';
+		const paidInvoices = data.client.invoice.filter(
 			(invoice) => invoice.invoiceStatus === 'sent' && isLate(invoice.dueDate)
 		);
 		return centsToDollars(sumInvoices(paidInvoices));
 	};
 
 	const getTotalOutstanding = (): string => {
-		if (!data.client.invoices || data.client.invoices.length < 1) return '0.00';
-		const paidInvoices = data.client.invoices.filter(
+		if (!data.client.invoice || data.client.invoice.length < 1) return '0.00';
+		const paidInvoices = data.client.invoice.filter(
 			(invoice) => invoice.invoiceStatus === 'sent' && !isLate(invoice.dueDate)
 		);
 		return centsToDollars(sumInvoices(paidInvoices));
@@ -73,7 +73,7 @@
 	class="flex flex-col-reverse md:flex-row justify-between items-start md:items-center mb-7 lg:mb-16 gap-y-6 md:gap-y-4"
 >
 	<!-- SEARCH FIELD -->
-	{#if data.client.invoices && data.client.invoices.length > 0}
+	{#if data.client.invoice && data.client.invoice.length > 0}
 		<Search />
 	{:else}
 		<div />
@@ -117,18 +117,18 @@
 <!-- INVOICE LIST -->
 <div>
 	<!-- invoices -->
-	{#if data.client.invoices === null}
+	{#if data.client.invoice === null || data.client.invoice === undefined}
 		Loading...
-	{:else if data.client.invoices <= 0}
+	{:else if data.client.invoice.length <= 0}
 		<BlankState />
 	{:else}
 		<InvoiceRowHeader className="text-daisyBush" />
 		<div class="flex flex-col-reverse">
-			{#each data.client.invoices as invoice}
+			{#each data.client.invoice as invoice}
 				<InvoiceRow {invoice} />
 			{/each}
 		</div>
-		<CircledAmount label="Total" amount={`$${centsToDollars(sumInvoices(data.client.invoices))}`} />
+		<CircledAmount label="Total" amount={`$${centsToDollars(sumInvoices(data.client.invoice))}`} />
 	{/if}
 </div>
 
